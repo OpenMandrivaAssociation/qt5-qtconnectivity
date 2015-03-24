@@ -1,10 +1,6 @@
-%define api 5
+%define api %(echo %{version} |cut -d. -f1)
 %define major %api
-
-%define qtminor 4
-%define qtsubminor 1
-
-%define qtversion %{api}.%{qtminor}.%{qtsubminor}
+%define beta alpha
 
 %define qtbluetooth %mklibname qt%{api}bluetooth %{major}
 %define qtbluetoothd %mklibname qt%{api}bluetooth -d
@@ -14,17 +10,22 @@
 %define qtnfcd %mklibname qt%{api}nfc -d
 %define qtnfc_p_d %mklibname qt%{api}nfc-private -d
 
-%define qttarballdir qtconnectivity-opensource-src-%{qtversion}
+%define qttarballdir qtconnectivity-opensource-src-%{version}%{?beta:-%{beta}}
 %define _qt5_prefix %{_libdir}/qt%{api}
 
 Name:		qt5-qtconnectivity
-Version:	%{qtversion}
+Version:	5.5.0
+%if 0%{?beta:1}
+Release:	0.%{beta}.1
+Source0:	http://download.qt.io/development_releases/qt/%(echo %{version} |cut -d. -f1-2)/%{version}-%{beta}/submodules/%{qttarballdir}.tar.xz
+%else
 Release:	1
+Source0:	http://download.qt.io/official_releases/qt/%(echo %{version} |cut -d. -f1-2)/%{version}/submodules/%{qttarballdir}.tar.xz
+%endif
 Summary:	Qt Connectivity
 Group:		Development/KDE and Qt
 License:	LGPLv2 with exceptions or GPLv3 with exceptions and GFDL
 URL:		http://www.qt-project.org
-Source0:	http://download.qt-project.org/official_releases/qt/%{api}.%{qtminor}/%{version}/submodules/%{qttarballdir}.tar.xz
 BuildRequires:	qt5-qtbase-devel >= %{version}
 BuildRequires:	pkgconfig(Qt5Quick) >= %{version}
 BuildRequires:	pkgconfig(Qt5Qml) >= %{version}
@@ -84,7 +85,7 @@ Devel files needed to build apps based on Qt Bluetooth.
 %{_qt5_exampledir}/bluetooth
 %{_qt5_prefix}/mkspecs/modules/qt_lib_bluetooth.pri
 %{_qt5_includedir}/QtBluetooth
-%exclude %{_qt5_includedir}/QtBluetooth/%qtversion
+%exclude %{_qt5_includedir}/QtBluetooth/%version
 
 #------------------------------------------------------------------------------
 
@@ -98,7 +99,7 @@ Provides: qt5-qtbluetooth-private-devel = %version
 Devel files needed to build apps based on QtBluetooth.
 
 %files -n %{qtbluetooth_p_d}
-%{_qt5_includedir}/QtBluetooth/%qtversion
+%{_qt5_includedir}/QtBluetooth/%version
 %{_qt5_prefix}/mkspecs/modules/qt_lib_bluetooth_private.pri
 
 #------------------------------------------------------------------------------
@@ -150,7 +151,7 @@ Devel files needed to build apps based on Qt Nfc.
 %{_qt5_exampledir}/nfc
 %{_qt5_prefix}/mkspecs/modules/qt_lib_nfc.pri
 %{_qt5_includedir}/QtNfc
-%exclude %{_qt5_includedir}/QtNfc/%qtversion
+%exclude %{_qt5_includedir}/QtNfc/%version
 
 #------------------------------------------------------------------------------
 
@@ -164,7 +165,7 @@ Provides: qt5-nfc-private-devel = %version
 Devel files needed to build apps based on QtNfc.
 
 %files -n %{qtnfc_p_d}
-%{_qt5_includedir}/QtNfc/%qtversion
+%{_qt5_includedir}/QtNfc/%version
 %{_qt5_prefix}/mkspecs/modules/qt_lib_nfc_private.pri
 
 #------------------------------------------------------------------------------
