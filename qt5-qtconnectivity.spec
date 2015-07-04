@@ -1,6 +1,6 @@
 %define api %(echo %{version} |cut -d. -f1)
 %define major %api
-%define beta rc
+%define beta %nil
 
 %define qtbluetooth %mklibname qt%{api}bluetooth %{major}
 %define qtbluetoothd %mklibname qt%{api}bluetooth -d
@@ -10,22 +10,23 @@
 %define qtnfcd %mklibname qt%{api}nfc -d
 %define qtnfc_p_d %mklibname qt%{api}nfc-private -d
 
-%define qttarballdir qtconnectivity-opensource-src-%{version}%{?beta:-%{beta}}
 %define _qt5_prefix %{_libdir}/qt%{api}
 
 Name:		qt5-qtconnectivity
 Version:	5.5.0
-%if 0%{?beta:1}
+%if "%{beta}" != ""
 Release:	1.%{beta}.1
-Source0:	http://download.qt.io/development_releases/qt/%(echo %{version} |cut -d. -f1-2)/%{version}-%{beta}/submodules/%{qttarballdir}.tar.xz
+%define qttarballdir qtconnectivity-opensource-src-%{version}-%{beta}
+Source0:	http://download.qt.io/development_releases/qt/%(echo %{version}|cut -d. -f1-2)/%{version}%{?beta:-%{beta}}/submodules/%{qttarballdir}.tar.xz
 %else
 Release:	1
-Source0:	http://download.qt.io/official_releases/qt/%(echo %{version} |cut -d. -f1-2)/%{version}/submodules/%{qttarballdir}.tar.xz
+%define qttarballdir qtconnectivity-opensource-src-%{version}
+Source0:	http://download.qt.io/official_releases/qt/%(echo %{version}|cut -d. -f1-2)/%{version}/submodules/%{qttarballdir}.tar.xz
 %endif
 Summary:	Qt Connectivity
 Group:		Development/KDE and Qt
 License:	LGPLv2 with exceptions or GPLv3 with exceptions and GFDL
-URL:		http://www.qt-project.org
+URL:		http://www.qt.io
 BuildRequires:	qt5-qtbase-devel >= %{version}
 BuildRequires:	pkgconfig(Qt5Quick) >= %{version}
 BuildRequires:	pkgconfig(Qt5Qml) >= %{version}
