@@ -30,7 +30,7 @@ URL:		http://www.qt.io
 BuildRequires:	qmake5
 BuildRequires:	pkgconfig(Qt5Quick) >= %{version}
 BuildRequires:	pkgconfig(Qt5Qml) >= %{version}
-BuildRequires:	pkgconfig(QtDBus) >= %{version}
+BuildRequires:	pkgconfig(Qt5DBus) >= %{version}
 BuildRequires:	pkgconfig(bluez)
 
 %description
