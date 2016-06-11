@@ -27,7 +27,7 @@ Summary:	Qt Connectivity
 Group:		Development/KDE and Qt
 License:	LGPLv2 with exceptions or GPLv3 with exceptions and GFDL
 URL:		http://www.qt.io
-BuildRequires:	qt5-qtbase-devel >= %{version}
+BuildRequires:	qmake5
 BuildRequires:	pkgconfig(Qt5Quick) >= %{version}
 BuildRequires:	pkgconfig(Qt5Qml) >= %{version}
 BuildRequires:	pkgconfig(bluez)
