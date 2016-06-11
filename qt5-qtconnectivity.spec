@@ -32,6 +32,7 @@ BuildRequires:	pkgconfig(Qt5Quick) >= %{version}
 BuildRequires:	pkgconfig(Qt5Qml) >= %{version}
 BuildRequires:	pkgconfig(Qt5DBus) >= %{version}
 BuildRequires:	pkgconfig(Qt5Concurrent) >= %{version}
+BuildRequires:	pkgconfig(Qt5Widgets) >= %{version}
 BuildRequires:	pkgconfig(bluez)
 
 %description
