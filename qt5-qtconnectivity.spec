@@ -13,7 +13,7 @@
 %define _qt5_prefix %{_libdir}/qt%{api}
 
 Name:		qt5-qtconnectivity
-Version:	5.6.1
+Version:	5.7.0
 %if "%{beta}" != ""
 Release:	1.%{beta}.1
 %define qttarballdir qtconnectivity-opensource-src-%{version}-%{beta}
