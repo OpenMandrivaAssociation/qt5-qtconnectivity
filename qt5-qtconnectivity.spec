@@ -1,6 +1,6 @@
 %define api %(echo %{version} |cut -d. -f1)
 %define major %api
-%define beta beta
+%define beta rc
 
 %define qtbluetooth %mklibname qt%{api}bluetooth %{major}
 %define qtbluetoothd %mklibname qt%{api}bluetooth -d
