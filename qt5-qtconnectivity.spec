@@ -1,6 +1,6 @@
 %define api %(echo %{version} |cut -d. -f1)
 %define major %api
-%define beta %{nil}
+%define beta beta
 
 %define qtbluetooth %mklibname qt%{api}bluetooth %{major}
 %define qtbluetoothd %mklibname qt%{api}bluetooth -d
@@ -13,10 +13,10 @@
 %define _qt5_prefix %{_libdir}/qt%{api}
 
 Name:		qt5-qtconnectivity
-Version:	5.9.2
+Version:	5.10.0
 %if "%{beta}" != ""
 Release:	0.%{beta}.1
-%define qttarballdir qtconnectivity-opensource-src-%{version}-%{beta}
+%define qttarballdir qtconnectivity-everywhere-src-%{version}-%{beta}
 Source0:	http://download.qt.io/development_releases/qt/%(echo %{version}|cut -d. -f1-2)/%{version}%{?beta:-%{beta}}/submodules/%{qttarballdir}.tar.xz
 %else
 Release:	1
@@ -53,7 +53,6 @@ Qt%{api} Component Library.
 The Qt Bluetooth enables connectivity between Bluetooth enabled devices.
 
 %files -n qtbluetooth5
-%{_qt5_bindir}/sdpscanner
 %{_qt5_prefix}/qml/QtBluetooth
 
 #------------------------------------------------------------------------------
