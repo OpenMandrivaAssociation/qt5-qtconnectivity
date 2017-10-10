@@ -33,7 +33,7 @@ BuildRequires:	pkgconfig(Qt5Qml) >= %{version}
 BuildRequires:	pkgconfig(Qt5DBus) >= %{version}
 BuildRequires:	pkgconfig(Qt5Concurrent) >= %{version}
 BuildRequires:	pkgconfig(Qt5Widgets) >= %{version}
-BuildRequires:	pkgconfig(bluez)
+BuildRequires:	pkgconfig(bluez) >= 5.47
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
@@ -53,6 +53,7 @@ Qt%{api} Component Library.
 The Qt Bluetooth enables connectivity between Bluetooth enabled devices.
 
 %files -n qtbluetooth5
+%{_qt5_bindir}/sdpscanner
 %{_qt5_prefix}/qml/QtBluetooth
 
 #------------------------------------------------------------------------------
