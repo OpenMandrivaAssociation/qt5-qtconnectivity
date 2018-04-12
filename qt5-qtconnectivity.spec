@@ -34,6 +34,8 @@ BuildRequires:	pkgconfig(Qt5DBus) >= %{version}
 BuildRequires:	pkgconfig(Qt5Concurrent) >= %{version}
 BuildRequires:	pkgconfig(Qt5Widgets) >= %{version}
 BuildRequires:	pkgconfig(bluez) >= 5.47
+# For the Provides: generator
+BuildRequires:	cmake >= 3.11.0-1
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
