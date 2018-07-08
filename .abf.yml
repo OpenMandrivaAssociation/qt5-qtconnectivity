@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   qtconnectivity-opensource-src-5.9.2.tar.xz: 40787a8d41640f662e6f970158d037c4aefea376
+sources:
+  qtconnectivity-opensource-src-5.9.6.tar.xz: fd427a172af469cfa0f8da4863993af25651b39d
