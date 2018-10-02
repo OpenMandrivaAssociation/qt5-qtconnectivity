@@ -177,15 +177,15 @@ Devel files needed to build apps based on QtNfc.
 #------------------------------------------------------------------------------
 
 %prep
-%setup -q -n %qttarballdir
+%autosetup -n %qttarballdir -p1
 
 %build
 %qmake_qt5
-%make
+%make_build
 
 #------------------------------------------------------------------------------
 %install
-%makeinstall_std INSTALL_ROOT=%{buildroot}
+%make_install INSTALL_ROOT=%{buildroot}
 
 # .la and .a files, die, die, die.
 rm -f %{buildroot}%{_qt5_libdir}/lib*.la
