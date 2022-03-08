@@ -19,12 +19,16 @@ Release:	0.%{beta}.1
 %define qttarballdir qtconnectivity-everywhere-src-%{version}-%{beta}
 Source0:	http://download.qt.io/development_releases/qt/%(echo %{version}|cut -d. -f1-2)/%{version}-%{beta}/submodules/%{qttarballdir}.tar.xz
 %else
-Release:	1
-%define qttarballdir qtconnectivity-everywhere-src-5.15.2
-Source0:	http://download.qt.io/official_releases/qt/%(echo %{version}|cut -d. -f1-2)/5.15.2/submodules/%{qttarballdir}.tar.xz
+Release:	2
+%define qttarballdir qtconnectivity-everywhere-opensource-src-%{version}
+Source0:	http://download.qt.io/official_releases/qt/%(echo %{version}|cut -d. -f1-2)/%{version}/submodules/%{qttarballdir}.tar.xz
 %endif
 # From KDE
-Patch1000:	0001-Bump-version.patch
+Patch1000:	0001-Correct-error-handling-in-QLowEnergyControllerPrivat.patch
+Patch1001:	0002-Always-call-setOpenMode-before-setSocketState.patch
+Patch1002:	0003-Fix-Linux-bluetooth-service-discovery-crash-with-mul.patch
+Patch1003:	0004-Use-the-service-s-socket-protocol-info-on-Bluez-blue.patch
+Patch1004:	0005-Keep-the-bluetooth-service-name-if-the-remote-has-pr.patch
 Summary:	Qt Connectivity
 Group:		Development/KDE and Qt
 License:	LGPLv2 with exceptions or GPLv3 with exceptions and GFDL
@@ -179,7 +183,7 @@ Devel files needed to build apps based on QtNfc.
 #------------------------------------------------------------------------------
 
 %prep
-%autosetup -n %qttarballdir -p1
+%autosetup -n %(echo %qttarballdir|sed -e 's,-opensource,,') -p1
 %{_qt5_prefix}/bin/syncqt.pl -version %{version}
 
 %build
@@ -189,9 +193,6 @@ Devel files needed to build apps based on QtNfc.
 #------------------------------------------------------------------------------
 %install
 %make_install INSTALL_ROOT=%{buildroot}
-
-# .la and .a files, die, die, die.
-rm -f %{buildroot}%{_qt5_libdir}/lib*.la
 
 ## .prl/.la file love
 # nuke .prl reference(s) to %%buildroot, excessive (.la-like) libs

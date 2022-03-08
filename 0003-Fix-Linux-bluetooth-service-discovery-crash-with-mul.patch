@@ -1,0 +1,45 @@
+From a1f8bb8c63e06cc74027436e7643c8d05359fc95 Mon Sep 17 00:00:00 2001
+From: Juha Vuolle <juha.vuolle@insta.fi>
+Date: Wed, 16 Feb 2022 13:35:33 +0200
+Subject: [PATCH 3/5] Fix Linux bluetooth service discovery crash with multiple
+ services
+
+The application code may call stop() for the service discovery agent
+when it has detected the service-of-interest.
+
+The crash occurs because the stop() will clear the list of discovered
+devices, but the service discovery result handling loop may still be in
+the middle of processing the services. If the loop accesses
+the by-now cleared device list on its next iteration, it will cause a
+list access violation assert.
+
+Fixes: QTBUG-100894
+Pick-to: 5.15 6.2 6.3
+Change-Id: Ica300cd8461543b533800ca06551b21d9b256613
+Reviewed-by: Ivan Solovev <ivan.solovev@qt.io>
+Reviewed-by: Alex Blasche <alexander.blasche@qt.io>
+(cherry picked from commit 2de33f78ec374ce6963b9c1715e4942c8cf70bb0)
+---
+ src/bluetooth/qbluetoothservicediscoveryagent_bluez.cpp | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/bluetooth/qbluetoothservicediscoveryagent_bluez.cpp b/src/bluetooth/qbluetoothservicediscoveryagent_bluez.cpp
+index 6a93143b..6d190711 100644
+--- a/src/bluetooth/qbluetoothservicediscoveryagent_bluez.cpp
++++ b/src/bluetooth/qbluetoothservicediscoveryagent_bluez.cpp
+@@ -334,8 +334,10 @@ void QBluetoothServiceDiscoveryAgentPrivate::_q_finishSdpScan(QBluetoothServiceD
+                 qCDebug(QT_BT_BLUEZ) << "Discovered services" << discoveredDevices.at(0).address().toString()
+                                      << serviceInfo.serviceName() << serviceInfo.serviceUuid()
+                                      << ">>>" << serviceInfo.serviceClassUuids();
+-
+-                emit q->serviceDiscovered(serviceInfo);
++                // Use queued connection to allow us finish the service looping; the application
++                // might call stop() when it has detected the service-of-interest.
++                QMetaObject::invokeMethod(q, "serviceDiscovered", Qt::QueuedConnection,
++                                          Q_ARG(QBluetoothServiceInfo, serviceInfo));
+             }
+         }
+     }
+-- 
+2.35.1
+

@@ -1,0 +1,53 @@
+From 00ab66b3a223acc6f489b31783cea86c27a86e46 Mon Sep 17 00:00:00 2001
+From: Andreas Buhr <andreas@andreasbuhr.de>
+Date: Wed, 24 Feb 2021 13:07:11 +0100
+Subject: [PATCH 1/5] Correct error handling in
+ QLowEnergyControllerPrivateBluezDBUS
+
+When a DBUS interface was removed for a device, error handling
+just assumed it was the org.bluez.Device1 interface, without checking.
+This lead to errors on disconnection if the device has a battery
+service: The code sends a disconnection request, then an
+InterfaceRemoved event for org.bluez.Battery1 occurs. This was
+interpreted as a removal of org.bluez.Device1 which in turn
+led to the controller going into UnknownRemoteDeviceError error state.
+This patch adds a check whether it is really org.bluez.Device1
+which is removed.
+
+Pick-to: 5.15
+Change-Id: I449b29cb9528cda23ce972f36f716a8774f01fe5
+Reviewed-by: Alex Blasche <alexander.blasche@qt.io>
+(cherry picked from commit af5f801c6b8de0bf0d21798bddef54cb14759ecd)
+---
+ src/bluetooth/qlowenergycontroller_bluezdbus.cpp | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/src/bluetooth/qlowenergycontroller_bluezdbus.cpp b/src/bluetooth/qlowenergycontroller_bluezdbus.cpp
+index d69fb6cd..ff6444f4 100644
+--- a/src/bluetooth/qlowenergycontroller_bluezdbus.cpp
++++ b/src/bluetooth/qlowenergycontroller_bluezdbus.cpp
+@@ -208,12 +208,17 @@ void QLowEnergyControllerPrivateBluezDBus::characteristicPropertiesChanged(
+         emit service->characteristicChanged(changedChar, newValue);
+ }
+ 
+-void QLowEnergyControllerPrivateBluezDBus::interfacesRemoved(
+-        const QDBusObjectPath &objectPath, const QStringList &/*interfaces*/)
++void QLowEnergyControllerPrivateBluezDBus::interfacesRemoved(const QDBusObjectPath &objectPath,
++                                                             const QStringList &interfaces)
+ {
+     if (objectPath.path() == device->path()) {
+-        qCWarning(QT_BT_BLUEZ) << "DBus Device1 was removed";
+-        executeClose(QLowEnergyController::UnknownRemoteDeviceError);
++        if (interfaces.contains(QStringLiteral("org.bluez.Device1"))) {
++            qCWarning(QT_BT_BLUEZ) << "DBus Device1 was removed";
++            executeClose(QLowEnergyController::UnknownRemoteDeviceError);
++        } else {
++            qCDebug(QT_BT_BLUEZ) << "DBus interfaces" << interfaces << "were removed from"
++                                 << objectPath.path();
++        }
+     } else if (objectPath.path() == adapter->path()) {
+         qCWarning(QT_BT_BLUEZ) << "DBus Adapter was removed";
+         executeClose(QLowEnergyController::InvalidBluetoothAdapterError);
+-- 
+2.35.1
+
