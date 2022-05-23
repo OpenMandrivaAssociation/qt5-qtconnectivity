@@ -1,7 +1,7 @@
-From a1f8bb8c63e06cc74027436e7643c8d05359fc95 Mon Sep 17 00:00:00 2001
+From 64335e513ea78d1c58b235a1a6aab9980beb55e3 Mon Sep 17 00:00:00 2001
 From: Juha Vuolle <juha.vuolle@insta.fi>
 Date: Wed, 16 Feb 2022 13:35:33 +0200
-Subject: [PATCH 3/5] Fix Linux bluetooth service discovery crash with multiple
+Subject: [PATCH 1/5] Fix Linux bluetooth service discovery crash with multiple
  services
 
 The application code may call stop() for the service discovery agent
@@ -41,5 +41,5 @@ index 6a93143b..6d190711 100644
          }
      }
 -- 
-2.35.1
+2.36.1
 
