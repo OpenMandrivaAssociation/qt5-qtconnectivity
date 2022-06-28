@@ -1,4 +1,4 @@
-From 4cd178588b3848b35fcd4324dd8d432422270286 Mon Sep 17 00:00:00 2001
+From 7cb1a9abb60cdf36a4d21752b157255b1a66f9f3 Mon Sep 17 00:00:00 2001
 From: Juha Vuolle <juha.vuolle@insta.fi>
 Date: Fri, 18 Feb 2022 13:28:13 +0200
 Subject: [PATCH 2/5] Use the service's socket protocol info on Bluez bluetooth

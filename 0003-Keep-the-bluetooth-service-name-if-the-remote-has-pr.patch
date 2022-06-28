@@ -1,4 +1,4 @@
-From d0c0c7718f55514d83dd55760016e821adf558f1 Mon Sep 17 00:00:00 2001
+From 76c7971ba3bc2d6132c5ac598bd1da793c5ec6cb Mon Sep 17 00:00:00 2001
 From: Juha Vuolle <juha.vuolle@insta.fi>
 Date: Mon, 7 Feb 2022 16:58:02 +0200
 Subject: [PATCH 3/5] Keep the bluetooth service name if the remote has
