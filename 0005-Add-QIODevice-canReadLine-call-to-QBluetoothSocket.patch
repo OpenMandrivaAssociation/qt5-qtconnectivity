@@ -1,4 +1,4 @@
-From 42c25efeaa409f711af1bd9a8144b445741ee114 Mon Sep 17 00:00:00 2001
+From 01e8b04b121712ea0a2b2793ce13f4dd5e9cfcf8 Mon Sep 17 00:00:00 2001
 From: Juha Vuolle <juha.vuolle@insta.fi>
 Date: Mon, 14 Mar 2022 13:03:27 +0200
 Subject: [PATCH 5/5] Add QIODevice::canReadLine call to QBluetoothSocket
@@ -38,5 +38,5 @@ index e4d85447..aadd4755 100644
  
  /*!
 -- 
-2.36.1
+2.37.2
 
