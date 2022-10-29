@@ -1,4 +1,4 @@
-From f2acdb97a41db66c502c789f840c0a4d9349d4a1 Mon Sep 17 00:00:00 2001
+From 8d6ee09f352c6c8fc88d9ce70bdb0da9548e3b75 Mon Sep 17 00:00:00 2001
 From: Juha Vuolle <juha.vuolle@insta.fi>
 Date: Wed, 16 Feb 2022 13:35:33 +0200
 Subject: [PATCH 1/5] Fix Linux bluetooth service discovery crash with multiple
@@ -41,5 +41,5 @@ index 6a93143b..6d190711 100644
          }
      }
 -- 
-2.37.2
+2.38.1
 

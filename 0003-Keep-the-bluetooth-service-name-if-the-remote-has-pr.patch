@@ -1,4 +1,4 @@
-From 5d59c756a41cb5c5fdbd6c52a0f6dddd394d726d Mon Sep 17 00:00:00 2001
+From a4f1a6a6a9965b4f6ef7210112987a0046514971 Mon Sep 17 00:00:00 2001
 From: Juha Vuolle <juha.vuolle@insta.fi>
 Date: Mon, 7 Feb 2022 16:58:02 +0200
 Subject: [PATCH 3/5] Keep the bluetooth service name if the remote has
@@ -32,5 +32,5 @@ index 6d190711..4a18cfc7 100644
                              serviceInfo.attribute(QBluetoothServiceInfo::ServiceClassIds).value<QBluetoothServiceInfo::Sequence>();
                      modSeq.removeOne(QVariant::fromValue(id));
 -- 
-2.37.2
+2.38.1
 

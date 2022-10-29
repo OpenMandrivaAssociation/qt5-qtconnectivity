@@ -1,4 +1,4 @@
-From 1c23b75d1628666501abfc3f00a5c7eccb0147a1 Mon Sep 17 00:00:00 2001
+From 2717884f4cb8ab180e904da6666514e8daff429a Mon Sep 17 00:00:00 2001
 From: Juha Vuolle <juha.vuolle@insta.fi>
 Date: Sat, 26 Feb 2022 16:07:52 +0200
 Subject: [PATCH 4/5] Handle LE enhanced connection complete in Bluez
@@ -38,5 +38,5 @@ index e2635fae..a8b8e3b9 100644
          emit connectionComplete(handle);
          break;
 -- 
-2.37.2
+2.38.1
 
