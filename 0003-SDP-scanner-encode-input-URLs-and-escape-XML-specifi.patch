@@ -1,0 +1,73 @@
+From 0f9e49cde3b7ca40cd94e63d2f5d29f5b586d3d6 Mon Sep 17 00:00:00 2001
+From: Ivan Solovev <ivan.solovev@qt.io>
+Date: Wed, 22 Feb 2023 15:41:59 +0100
+Subject: [PATCH 3/3] SDP scanner: encode input URLs and escape XML-specific
+ characters
+
+The old implementation didn't take care of escaping the XML-specific
+characters and didn't handle non-printable characters.
+
+This patch makes use of QUrl class to properly %-encode the input data.
+The QUrl::toEncoded() method %-encodes all XML-specific characters
+except '&', so we need to manually replace it with "&amp;" before
+adding the url to the generated XML.
+
+Escaping special XML characters potentially allows Qt Bluetooth to
+handle more URLs received from sdpscanner, because QXmlStreamReader
+discards attributes with unescaped special characters, so previously
+part of the URLs could be silently skipped.
+For other potential sdpscanner users this change shouldn't make much
+difference, because they should anyway parse the returned XML documents
+according to XML standard.
+
+%-encoding of URLs potentially changes the way the URL looks for the
+user, but not for the software that should handle the URLs, so this
+change is also safe.
+
+[ChangeLog][Qt Bluetooth][sdpscanner] sdpscanner now %-encodes the
+URLs and escapes all XML-specific characters in them before adding
+the result to the generated XML output.
+
+Fixes: QTBUG-111369
+Pick-to: 6.5 6.4 6.4.3 6.2 5.15
+Change-Id: I6de080fef7689ef96fe5e5e26c62a3c48ebc45b7
+Reviewed-by: Thiago Macieira <thiago.macieira@intel.com>
+(cherry picked from commit d195ae3a07dcd3fceeb70554ed9493f55ef50c86)
+---
+ src/tools/sdpscanner/main.cpp | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/src/tools/sdpscanner/main.cpp b/src/tools/sdpscanner/main.cpp
+index 690f9aaa..c39ff8f3 100644
+--- a/src/tools/sdpscanner/main.cpp
++++ b/src/tools/sdpscanner/main.cpp
+@@ -39,6 +39,7 @@
+ 
+ #include <QtCore/QByteArray>
+ #include <QtCore/QDebug>
++#include <QtCore/QUrl>
+ #include <stdio.h>
+ #include <string>
+ #include <bluetooth/bluetooth.h>
+@@ -213,10 +214,17 @@ static void parseAttributeValues(sdp_data_t *data, int indentation, QByteArray &
+     case SDP_URL_STR8:
+     case SDP_URL_STR16:
+     case SDP_URL_STR32:
++    {
+         xmlOutput.append("<url value=\"");
+-        xmlOutput.append(data->val.str, qstrnlen(data->val.str, data->unitSize));
++        const QByteArray urlData =
++                QByteArray::fromRawData(data->val.str, qstrnlen(data->val.str, data->unitSize));
++        const QUrl url = QUrl::fromEncoded(urlData);
++        // Encoded url %-encodes all of the XML special characters except '&',
++        // so we need to do that manually
++        xmlOutput.append(url.toEncoded().replace('&', "&amp;"));
+         xmlOutput.append("\"/>\n");
+         break;
++    }
+     default:
+         fprintf(stderr, "Unknown dtd type\n");
+     }
+-- 
+2.40.0.rc2
+

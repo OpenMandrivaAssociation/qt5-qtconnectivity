@@ -13,22 +13,20 @@
 %define _qt5_prefix %{_libdir}/qt%{api}
 
 Name:		qt5-qtconnectivity
-Version:	5.15.8
+Version:	5.15.9
 %if "%{beta}" != ""
 Release:	0.%{beta}.1
 %define qttarballdir qtconnectivity-everywhere-src-%{version}-%{beta}
 Source0:	http://download.qt.io/development_releases/qt/%(echo %{version}|cut -d. -f1-2)/%{version}-%{beta}/submodules/%{qttarballdir}.tar.xz
 %else
-Release:	2
+Release:	1
 %define qttarballdir qtconnectivity-everywhere-opensource-src-%{version}
 Source0:	http://download.qt.io/official_releases/qt/%(echo %{version}|cut -d. -f1-2)/%{version}/submodules/%{qttarballdir}.tar.xz
 %endif
 # From KDE
-Patch1000:	0001-Fix-Linux-bluetooth-service-discovery-crash-with-mul.patch
-Patch1001:	0002-Use-the-service-s-socket-protocol-info-on-Bluez-blue.patch
-Patch1002:	0003-Keep-the-bluetooth-service-name-if-the-remote-has-pr.patch
-Patch1003:	0004-Handle-LE-enhanced-connection-complete-in-Bluez-peri.patch
-Patch1004:	0005-Add-QIODevice-canReadLine-call-to-QBluetoothSocket.patch
+Patch1001:	0001-sdpscanner-fix-potential-unwanted-truncation-for-SDP.patch
+Patch1002:	0002-sdpscanner-fix-URL-processing.patch
+Patch1003:	0003-SDP-scanner-encode-input-URLs-and-escape-XML-specifi.patch
 Summary:	Qt Connectivity
 Group:		Development/KDE and Qt
 License:	LGPLv2 with exceptions or GPLv3 with exceptions and GFDL
