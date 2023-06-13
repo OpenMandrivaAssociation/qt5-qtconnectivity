@@ -1,0 +1,86 @@
+From eeaf42bccd49e8161fbae82d110026d25a5a9a7f Mon Sep 17 00:00:00 2001
+From: Juha Vuolle <juha.vuolle@insta.fi>
+Date: Fri, 13 May 2022 07:48:40 +0300
+Subject: [PATCH 4/4] Close socket descriptor when QBluetoothSocketBluez is
+ destroyed
+
+There are two private QBluetoothSocket backends on Linux:
+- QBluetoothSocketBluez is native linux socket implementation
+  It is always used by the linux QBluetoothServer, and by
+  QBluetoothSocket if Bluez version is < 5.46
+- QBluetoothSocketBluezDbus used by QBluetoothSocket when
+  Bluez >= 5.46
+
+Leaving the native socket unclosed leaks the resource and eventually
+we may run out of descriptors. This is reproducible by creating and
+destroying QBluetoothServer instances in a loop.
+
+As a related drive-by:
+- Fix bluetooth socket autotest version check. DBus socket is used
+  with bluez 5.46+ (for clarity: DBus lowenergycontroller
+  is used with bluez 5.42+). This is needed for the test to pass
+  with Bluez < 5.46
+- Add a clarifying comment on socket close()
+
+Fixes: QTBUG-103067
+Pick-to: 5.15 6.2 6.3
+Change-Id: Idc38c743be09e559ea82bf09c2f9e44e4b80d666
+Reviewed-by: Ivan Solovev <ivan.solovev@qt.io>
+Reviewed-by: Alex Blasche <alexander.blasche@qt.io>
+(cherry picked from commit 3aafe9d5ce117858143dbb527f742cf875aa83e8)
+
+* asturmlechner 2023-04-10: Drop conflicting drive-by fix in socket
+  autotest - version check does not exist at least in 5.15.9.
+---
+ src/bluetooth/qbluetoothsocket.cpp       | 7 ++++++-
+ src/bluetooth/qbluetoothsocket_bluez.cpp | 6 ++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/src/bluetooth/qbluetoothsocket.cpp b/src/bluetooth/qbluetoothsocket.cpp
+index 60a64375..fcd0fbb2 100644
+--- a/src/bluetooth/qbluetoothsocket.cpp
++++ b/src/bluetooth/qbluetoothsocket.cpp
+@@ -791,10 +791,15 @@ void QBluetoothSocket::close()
+   Set the socket to use \a socketDescriptor with a type of \a socketType,
+   which is in state, \a socketState, and mode, \a openMode.
+ 
++  The set socket descriptor is considered owned by the QBluetoothSocket
++  and may be e.g. closed once finished.
++
+   Returns true on success
+ */
+ 
+-
++// ### Qt 7 consider making this function private. The qbluetoothsocket_bluez backend is the
++// the only backend providing publicly accessible support for this. Other backends implement
++// similarly named, but private, overload
+ bool QBluetoothSocket::setSocketDescriptor(int socketDescriptor, QBluetoothServiceInfo::Protocol socketType,
+                                            SocketState socketState, OpenMode openMode)
+ {
+diff --git a/src/bluetooth/qbluetoothsocket_bluez.cpp b/src/bluetooth/qbluetoothsocket_bluez.cpp
+index da92082d..6d27c7a2 100644
+--- a/src/bluetooth/qbluetoothsocket_bluez.cpp
++++ b/src/bluetooth/qbluetoothsocket_bluez.cpp
+@@ -75,6 +75,10 @@ QBluetoothSocketPrivateBluez::~QBluetoothSocketPrivateBluez()
+     readNotifier = nullptr;
+     delete connectWriteNotifier;
+     connectWriteNotifier = nullptr;
++
++    // If the socket wasn't closed/aborted make sure we free the socket file descriptor
++    if (socket != -1)
++        QT_CLOSE(socket);
+ }
+ 
+ bool QBluetoothSocketPrivateBluez::ensureNativeSocket(QBluetoothServiceInfo::Protocol type)
+@@ -658,6 +662,8 @@ qint64 QBluetoothSocketPrivateBluez::readData(char *data, qint64 maxSize)
+ 
+ void QBluetoothSocketPrivateBluez::close()
+ {
++    // If we have pending data on the write buffer, wait until it has been written,
++    // after which this close() will be called again
+     if (txBuffer.size() > 0)
+         connectWriteNotifier->setEnabled(true);
+     else
+-- 
+2.41.0.rc2
+
