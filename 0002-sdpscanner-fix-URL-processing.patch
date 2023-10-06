@@ -1,7 +1,7 @@
-From 48a50d9f85e1e9330cd2ce0e107d4bb6b945f503 Mon Sep 17 00:00:00 2001
+From 081102e3c89abb14154653c1b244636936b7b518 Mon Sep 17 00:00:00 2001
 From: Ivan Solovev <ivan.solovev@qt.io>
 Date: Fri, 17 Feb 2023 12:05:17 +0100
-Subject: [PATCH 2/4] sdpscanner: fix URL processing
+Subject: [PATCH 2/6] sdpscanner: fix URL processing
 
 Do not use the fixed-size temporary buffer, instead just parse the
 data as a QByteArray.
@@ -46,5 +46,5 @@ index 1a292130..690f9aaa 100644
          break;
      default:
 -- 
-2.41.0.rc2
+2.42.0
 

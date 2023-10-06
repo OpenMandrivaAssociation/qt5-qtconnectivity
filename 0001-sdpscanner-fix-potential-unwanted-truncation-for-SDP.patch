@@ -1,7 +1,7 @@
-From d648e9d0935d695b94802d14ead5fd6d17d54ef6 Mon Sep 17 00:00:00 2001
+From afc9b500f892ec25eb27ffc0a4be8d20eecb70a0 Mon Sep 17 00:00:00 2001
 From: Ivan Solovev <ivan.solovev@qt.io>
 Date: Fri, 17 Feb 2023 17:58:35 +0100
-Subject: [PATCH 1/4] sdpscanner: fix potential unwanted truncation for
+Subject: [PATCH 1/6] sdpscanner: fix potential unwanted truncation for
  SDP_TEXT_STR{8,16,32}
 
 QByteArray::resize() treats all negative parameters as a request for
@@ -37,5 +37,5 @@ index 7e09ca6e..1a292130 100644
              }
          }
 -- 
-2.41.0.rc2
+2.42.0
 

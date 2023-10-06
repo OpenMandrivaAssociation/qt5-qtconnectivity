@@ -1,0 +1,84 @@
+From bf8aee5859a7a2e5afb7cd9c81b7c897d0e99465 Mon Sep 17 00:00:00 2001
+From: Marc Mutz <marc.mutz@qt.io>
+Date: Fri, 11 Aug 2023 14:37:26 +0200
+Subject: [PATCH 5/6] QBluetoothUuid: remove default case labels and fix the
+ fallout
+
+Learn to love -Wswitch and avoid default case labels even at the cost
+of having a few enumerator cases "too many". They help catch mistakes,
+like, in this case, the missing handling of
+QBluetoothUuid::CharacteristicType::WeightScaleFeature.
+
+[ChangeLog][QtBluethooth][QBluetoothUuid] Fixed missing result of
+characteristicToString(CharacteristicType::WeightScaleFeature).
+
+Pick-to: 6.6 6.5 6.2 5.15
+Change-Id: I04b7cf9ee058ef5a8d202fff01fb347d315562f6
+Reviewed-by: Alex Blasche <alexander.blasche@qt.io>
+(cherry picked from commit 439e818f7843b6a117e1bfe755e313022e14aafa)
+
+* asturmlechner 2023-08-15: Resolve conflict with dev branch commit
+  66bb9839dbccea311cbb85168da86fb6d4a2d136
+---
+ src/bluetooth/qbluetoothuuid.cpp | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/src/bluetooth/qbluetoothuuid.cpp b/src/bluetooth/qbluetoothuuid.cpp
+index bc00aa95..e0ad090a 100644
+--- a/src/bluetooth/qbluetoothuuid.cpp
++++ b/src/bluetooth/qbluetoothuuid.cpp
+@@ -834,8 +834,6 @@ QString QBluetoothUuid::serviceClassToString(QBluetoothUuid::ServiceClassUuid uu
+     //: Connection management (Bluetooth)
+     case QBluetoothUuid::BondManagement: return QBluetoothServiceDiscoveryAgent::tr("Bond Management");
+     case QBluetoothUuid::ContinuousGlucoseMonitoring: return QBluetoothServiceDiscoveryAgent::tr("Continuous Glucose Monitoring");
+-    default:
+-        break;
+     }
+ 
+     return QString();
+@@ -878,8 +876,6 @@ QString QBluetoothUuid::protocolToString(QBluetoothUuid::ProtocolUuid uuid)
+     case QBluetoothUuid::McapControlChannel: return QBluetoothServiceDiscoveryAgent::tr("Multi-Channel Adaptation Protocol - Control");
+     case QBluetoothUuid::McapDataChannel: return QBluetoothServiceDiscoveryAgent::tr("Multi-Channel Adaptation Protocol - Data");
+     case QBluetoothUuid::L2cap: return QBluetoothServiceDiscoveryAgent::tr("Layer 2 Control Protocol");
+-    default:
+-        break;
+     }
+ 
+     return QString();
+@@ -1081,13 +1077,13 @@ QString QBluetoothUuid::characteristicToString(CharacteristicType uuid)
+     case QBluetoothUuid::BodyCompositionFeature: return QBluetoothServiceDiscoveryAgent::tr("Body Composition Feature");
+     case QBluetoothUuid::BodyCompositionMeasurement: return QBluetoothServiceDiscoveryAgent::tr("Body Composition Measurement");
+     case QBluetoothUuid::WeightMeasurement: return QBluetoothServiceDiscoveryAgent::tr("Weight Measurement");
++    case QBluetoothUuid::CharacteristicType::WeightScaleFeature:
++        return QBluetoothDeviceDiscoveryAgent::tr("Weight Scale Feature");
+     case QBluetoothUuid::UserControlPoint: return QBluetoothServiceDiscoveryAgent::tr("User Control Point");
+     case QBluetoothUuid::MagneticFluxDensity2D: return QBluetoothServiceDiscoveryAgent::tr("Magnetic Flux Density 2D");
+     case QBluetoothUuid::MagneticFluxDensity3D: return QBluetoothServiceDiscoveryAgent::tr("Magnetic Flux Density 3D");
+     case QBluetoothUuid::Language: return QBluetoothServiceDiscoveryAgent::tr("Language");
+     case QBluetoothUuid::BarometricPressureTrend: return QBluetoothServiceDiscoveryAgent::tr("Barometric Pressure Trend");
+-    default:
+-        break;
+     }
+ 
+     return QString();
+@@ -1104,6 +1100,8 @@ QString QBluetoothUuid::characteristicToString(CharacteristicType uuid)
+ QString QBluetoothUuid::descriptorToString(QBluetoothUuid::DescriptorType uuid)
+ {
+     switch (uuid) {
++    case QBluetoothUuid::UnknownDescriptorType:
++        break; // returns {} below
+     case QBluetoothUuid::CharacteristicExtendedProperties:
+         return QBluetoothServiceDiscoveryAgent::tr("Characteristic Extended Properties");
+     case QBluetoothUuid::CharacteristicUserDescription:
+@@ -1128,8 +1126,6 @@ QString QBluetoothUuid::descriptorToString(QBluetoothUuid::DescriptorType uuid)
+         return QBluetoothServiceDiscoveryAgent::tr("Environmental Sensing Measurement");
+     case QBluetoothUuid::EnvironmentalSensingTriggerSetting:
+         return QBluetoothServiceDiscoveryAgent::tr("Environmental Sensing Trigger Setting");
+-    default:
+-        break;
+     }
+ 
+     return QString();
+-- 
+2.42.0
+

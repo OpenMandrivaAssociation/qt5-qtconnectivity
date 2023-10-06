@@ -13,7 +13,7 @@
 %define _qt5_prefix %{_libdir}/qt%{api}
 
 Name:		qt5-qtconnectivity
-Version:	5.15.10
+Version:	5.15.11
 %if "%{beta}" != ""
 Release:	0.%{beta}.1
 %define qttarballdir qtconnectivity-everywhere-src-%{version}-%{beta}
@@ -28,6 +28,8 @@ Patch1001:	0001-sdpscanner-fix-potential-unwanted-truncation-for-SDP.patch
 Patch1002:	0002-sdpscanner-fix-URL-processing.patch
 Patch1003:	0003-SDP-scanner-encode-input-URLs-and-escape-XML-specifi.patch
 Patch1004:	0004-Close-socket-descriptor-when-QBluetoothSocketBluez-i.patch
+Patch1005:	0005-QBluetoothUuid-remove-default-case-labels-and-fix-th.patch
+Patch1006:	0006-Fix-translation-context-of-QBluetoothUuid-WeightScal.patch
 Summary:	Qt Connectivity
 Group:		Development/KDE and Qt
 License:	LGPLv2 with exceptions or GPLv3 with exceptions and GFDL
