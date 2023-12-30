@@ -1,4 +1,4 @@
-From afc9b500f892ec25eb27ffc0a4be8d20eecb70a0 Mon Sep 17 00:00:00 2001
+From 4cebbab3adefd4fb5472f794c2b64b6b6d37332b Mon Sep 17 00:00:00 2001
 From: Ivan Solovev <ivan.solovev@qt.io>
 Date: Fri, 17 Feb 2023 17:58:35 +0100
 Subject: [PATCH 1/6] sdpscanner: fix potential unwanted truncation for
@@ -37,5 +37,5 @@ index 7e09ca6e..1a292130 100644
              }
          }
 -- 
-2.42.0
+2.43.0
 

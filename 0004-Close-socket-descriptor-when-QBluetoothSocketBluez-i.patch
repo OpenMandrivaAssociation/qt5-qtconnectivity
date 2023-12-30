@@ -1,4 +1,4 @@
-From df4684d43440eedf9a4bd9d93328bfa2c1e0e496 Mon Sep 17 00:00:00 2001
+From 124fc2903b6556b5f042dcbad36fe95ccbf75716 Mon Sep 17 00:00:00 2001
 From: Juha Vuolle <juha.vuolle@insta.fi>
 Date: Fri, 13 May 2022 07:48:40 +0300
 Subject: [PATCH 4/6] Close socket descriptor when QBluetoothSocketBluez is
@@ -51,5 +51,5 @@ index 9da67272..fcd0fbb2 100644
                                             SocketState socketState, OpenMode openMode)
  {
 -- 
-2.42.0
+2.43.0
 

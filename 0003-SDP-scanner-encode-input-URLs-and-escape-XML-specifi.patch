@@ -1,4 +1,4 @@
-From 50968328deb8c440e1c334a08903e77afc769a43 Mon Sep 17 00:00:00 2001
+From c929e2bdadd0a467ed4927ebeca0b455bb4d9fdb Mon Sep 17 00:00:00 2001
 From: Ivan Solovev <ivan.solovev@qt.io>
 Date: Wed, 22 Feb 2023 15:41:59 +0100
 Subject: [PATCH 3/6] SDP scanner: encode input URLs and escape XML-specific
@@ -69,5 +69,5 @@ index 690f9aaa..c39ff8f3 100644
          fprintf(stderr, "Unknown dtd type\n");
      }
 -- 
-2.42.0
+2.43.0
 
