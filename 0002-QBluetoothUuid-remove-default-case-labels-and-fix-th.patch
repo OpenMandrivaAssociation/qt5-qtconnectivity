@@ -1,7 +1,7 @@
-From 26e167f31e63afc34f2ecc0b6583dba5f27f6cac Mon Sep 17 00:00:00 2001
+From f50b23c30625dcd14781181d5d73993d02524927 Mon Sep 17 00:00:00 2001
 From: Marc Mutz <marc.mutz@qt.io>
 Date: Fri, 11 Aug 2023 14:37:26 +0200
-Subject: [PATCH 5/6] QBluetoothUuid: remove default case labels and fix the
+Subject: [PATCH 2/3] QBluetoothUuid: remove default case labels and fix the
  fallout
 
 Learn to love -Wswitch and avoid default case labels even at the cost
@@ -80,5 +80,5 @@ index bc00aa95..e0ad090a 100644
  
      return QString();
 -- 
-2.43.0
+2.45.1
 
