@@ -1,4 +1,4 @@
-From 99f30db37c63447c59d5fac15bc8feb832a7fd04 Mon Sep 17 00:00:00 2001
+From f2a9c5d1235d88cc26f2cfa348a037b65e31a5ae Mon Sep 17 00:00:00 2001
 From: Friedemann Kleint <Friedemann.Kleint@qt.io>
 Date: Mon, 21 Aug 2023 08:24:28 +0200
 Subject: [PATCH 3/3] Fix translation context of
@@ -28,5 +28,5 @@ index e0ad090a..517465bd 100644
      case QBluetoothUuid::MagneticFluxDensity2D: return QBluetoothServiceDiscoveryAgent::tr("Magnetic Flux Density 2D");
      case QBluetoothUuid::MagneticFluxDensity3D: return QBluetoothServiceDiscoveryAgent::tr("Magnetic Flux Density 3D");
 -- 
-2.45.1
+2.46.0
 
